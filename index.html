@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Non-Moving DoHome</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{--bg:#f4f6fa;--card:#fff;--ink:#1d2433;--mut:#6b7488;--line:#e3e7ef;--pri:#e8590c;--pri2:#c94a08;--ok:#2b8a3e;--bad:#c92a2a;--warn:#e67700}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Sarabun',system-ui,sans-serif;background:var(--bg);color:var(--ink);font-size:15px}
+header{background:linear-gradient(135deg,#e8590c,#f08c00);color:#fff;padding:18px 24px}
+header h1{margin:0;font-size:22px;font-weight:700}
+header p{margin:4px 0 0;opacity:.9;font-size:13px}
+main{max-width:1280px;margin:0 auto;padding:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:16px}
+.card h2{margin:0 0 12px;font-size:16px}
+.drop{border:2px dashed #c9d0de;border-radius:12px;padding:26px;text-align:center;color:var(--mut);cursor:pointer;transition:.15s}
+.drop:hover,.drop.on{border-color:var(--pri);background:#fff4ec;color:var(--pri)}
+.grid{display:grid;gap:12px}
+.g4{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+label{display:block;font-size:12.5px;color:var(--mut);margin-bottom:4px;font-weight:500}
+select,input[type=text],input[type=number],input[type=date]{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:8px;font:inherit;background:#fff}
+button{font:inherit;cursor:pointer;border:1px solid var(--line);background:#fff;border-radius:8px;padding:8px 14px;color:var(--ink)}
+button:hover{border-color:var(--pri);color:var(--pri)}
+button.pri{background:var(--pri);border-color:var(--pri);color:#fff;font-weight:600}
+button.pri:hover{background:var(--pri2);color:#fff}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{padding:5px 12px;border-radius:99px;font-size:13px}
+.chip.on{background:var(--pri);border-color:var(--pri);color:#fff}
+.kpi{padding:14px;border-radius:10px;background:#fafbfd;border:1px solid var(--line)}
+.kpi .l{font-size:12.5px;color:var(--mut)}
+.kpi .v{font-size:24px;font-weight:700;margin-top:2px}
+.kpi.bad .v{color:var(--bad)}
+.tw{overflow:auto;max-height:560px;border:1px solid var(--line);border-radius:10px}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th{position:sticky;top:0;background:#f0f2f7;text-align:left;padding:9px 10px;cursor:pointer;white-space:nowrap;border-bottom:1px solid var(--line)}
+th:hover{color:var(--pri)}
+td{padding:7px 10px;border-bottom:1px solid #eef0f5;white-space:nowrap}
+td.n,th.n{text-align:right}
+tr:hover td{background:#fff8f2}
+.tag{padding:2px 8px;border-radius:99px;font-size:12px;background:#ffe8d6;color:var(--pri2)}
+.tag.r{background:#ffe3e3;color:var(--bad)}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:end}
+.hide{display:none}
+.mut{color:var(--mut);font-size:13px}
+.cb{display:flex;flex-wrap:wrap;gap:6px 14px;max-height:120px;overflow:auto;padding:8px;border:1px solid var(--line);border-radius:8px}
+.cb label{display:flex;align-items:center;gap:5px;margin:0;color:var(--ink);font-size:13px}
+.pager{display:flex;gap:8px;align-items:center;justify-content:flex-end;margin-top:10px}
+@media(max-width:640px){main{padding:10px}header{padding:14px}}
+</style>
+</head>
+<body>
+<header>
+  <h1>Non-Moving Stock — DoHome</h1>
+  <p>วิเคราะห์สินค้าไม่เคลื่อนไหว (มีสต็อกแต่ไม่มียอดขาย) จากไฟล์ Excel/CSV — ประมวลผลในเบราว์เซอร์ ข้อมูลไม่ถูกส่งออกไปที่ใด</p>
+</header>
+<main>
+
+<section class="card" id="sUpload">
+  <h2>1) อัปโหลดข้อมูล</h2>
+  <div class="drop" id="drop">ลากไฟล์ .xlsx / .xls / .csv มาวางที่นี่ หรือคลิกเพื่อเลือก (เลือกได้หลายไฟล์ ระบบจะรวมให้)</div>
+  <input type="file" id="file" accept=".xlsx,.xls,.csv" multiple class="hide">
+  <div class="row" style="margin-top:12px">
+    <div style="min-width:120px"><label>แถวหัวตาราง (Header row)</label><input type="number" id="hdrRow" value="1" min="1"></div>
+    <div id="sheetWrap" class="hide" style="min-width:180px"><label>ชีต</label><select id="sheetSel"></select></div>
+    <button id="btnDemo">ลองใช้ข้อมูลตัวอย่าง</button>
+    <span class="mut" id="fileInfo"></span>
+  </div>
+</section>
+
+<section class="card hide" id="sMap">
+  <h2>2) จับคู่คอลัมน์ &amp; นิยาม Non-move</h2>
+  <div class="grid g4">
+    <div><label>รหัสสินค้า (SKU)</label><select id="mSku"></select></div>
+    <div><label>ชื่อสินค้า</label><select id="mName"></select></div>
+    <div><label>สาขา / คลัง (ถ้ามี)</label><select id="mBranch"></select></div>
+    <div><label>สต็อกคงเหลือ (จำนวน)</label><select id="mStock"></select></div>
+    <div><label>มูลค่าสต็อก (ถ้ามี)</label><select id="mValue"></select></div>
+    <div><label>หมวด / กลุ่มสินค้า (ถ้ามี)</label><select id="mCat"></select></div>
+  </div>
+  <div style="margin-top:14px">
+    <label>วิธีนิยาม Non-move</label>
+    <div class="chips">
+      <button class="chip on" data-mode="date">ไม่มีการขายเกิน X วัน (ใช้วันที่ขายล่าสุด)</button>
+      <button class="chip" data-mode="sales">ยอดขายรวมหลายเดือน = 0 (เลือกคอลัมน์ยอดขาย)</button>
+    </div>
+  </div>
+  <div id="modeDate" class="row" style="margin-top:12px">
+    <div style="min-width:220px"><label>คอลัมน์วันที่ขายล่าสุด</label><select id="mLast"></select></div>
+    <div style="min-width:170px"><label>วันที่อ้างอิง</label><input type="date" id="refDate"></div>
+  </div>
+  <div id="modeSales" class="hide" style="margin-top:12px">
+    <label>เลือกคอลัมน์ยอดขาย (จำนวนหรือบาท) ที่จะนับรวม</label>
+    <div class="cb" id="salesCols"></div>
+  </div>
+  <div style="margin-top:14px"><button class="pri" id="btnRun">วิเคราะห์</button></div>
+</section>
+
+<div id="sResult" class="hide">
+  <section class="card">
+    <h2>3) สรุปผล</h2>
+    <div class="row" style="margin-bottom:12px" id="thrRow">
+      <div><label>ไม่เคลื่อนไหวเกิน (วัน)</label>
+        <div class="chips" id="thrChips">
+          <button class="chip" data-d="30">30</button><button class="chip" data-d="60">60</button>
+          <button class="chip on" data-d="90">90</button><button class="chip" data-d="120">120</button>
+          <button class="chip" data-d="180">180</button><button class="chip" data-d="365">365</button>
+        </div></div>
+      <div style="width:110px"><label>กำหนดเอง</label><input type="number" id="thrCustom" min="1" placeholder="วัน"></div>
+    </div>
+    <div class="grid g4" id="kpis"></div>
+  </section>
+
+  <section class="card">
+    <h2 id="chartTitle">Top 15 สาขา/หมวด ที่มี Non-move มากที่สุด</h2>
+    <div style="position:relative;height:320px"><canvas id="chart"></canvas></div>
+  </section>
+
+  <section class="card">
+    <h2>รายการสินค้า Non-move</h2>
+    <div class="row" style="margin-bottom:10px">
+      <div style="flex:1;min-width:200px"><label>ค้นหา (รหัส/ชื่อ)</label><input type="text" id="q" placeholder="พิมพ์เพื่อค้นหา"></div>
+      <div style="min-width:180px"><label>สาขา</label><select id="fBranch"><option value="">ทั้งหมด</option></select></div>
+      <div style="min-width:180px"><label>หมวด</label><select id="fCat"><option value="">ทั้งหมด</option></select></div>
+      <button class="pri" id="btnExport">Export Excel</button>
+    </div>
+    <div class="tw"><table id="tbl"><thead></thead><tbody></tbody></table></div>
+    <div class="pager"><span class="mut" id="pgInfo"></span><button id="pgPrev">ก่อนหน้า</button><button id="pgNext">ถัดไป</button></div>
+  </section>
+</div>
+</main>
+
+<script>
+/* ---------- state (in-memory only) ---------- */
+const S={raw:[],headers:[],mode:'date',thr:90,res:[],view:[],sortKey:'value',sortDir:-1,page:0,PS:100,chart:null,wbs:[]};
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmt=n=>n==null||isNaN(n)?'-':Number(n).toLocaleString('th-TH',{maximumFractionDigits:0});
+
+/* ---------- file loading ---------- */
+const drop=$('drop'),fileIn=$('file');
+drop.onclick=()=>fileIn.click();
+['dragover','dragenter'].forEach(e=>drop.addEventListener(e,ev=>{ev.preventDefault();drop.classList.add('on')}));
+['dragleave','drop'].forEach(e=>drop.addEventListener(e,ev=>{ev.preventDefault();drop.classList.remove('on')}));
+drop.addEventListener('drop',ev=>handleFiles(ev.dataTransfer.files));
+fileIn.onchange=()=>handleFiles(fileIn.files);
+$('hdrRow').onchange=()=>rebuild();
+$('sheetSel').onchange=()=>rebuild();
+
+async function handleFiles(files){
+  S.wbs=[];
+  for(const f of files){
+    const buf=await f.arrayBuffer();
+    const wb=XLSX.read(buf,{type:'array',cellDates:true});
+    S.wbs.push({name:f.name,wb});
+  }
+  const names=[...new Set(S.wbs.flatMap(x=>x.wb.SheetNames))];
+  $('sheetSel').innerHTML=names.map(n=>`<option>${esc(n)}</option>`).join('');
+  $('sheetWrap').classList.toggle('hide',names.length<=1);
+  rebuild();
+}
+function rebuild(){
+  const hr=Math.max(1,+$('hdrRow').value||1)-1, sh=$('sheetSel').value;
+  let rows=[],headers=[],used=[];
+  for(const {name,wb} of S.wbs){
+    const sn=wb.SheetNames.includes(sh)?sh:wb.SheetNames[0];
+    const aoa=XLSX.utils.sheet_to_json(wb.Sheets[sn],{header:1,raw:true,defval:''});
+    if(aoa.length<=hr) continue;
+    const hdr=aoa[hr].map((h,i)=>String(h===''?('คอลัมน์'+(i+1)):h).trim());
+    hdr.forEach(h=>{if(!headers.includes(h))headers.push(h)});
+    for(let i=hr+1;i<aoa.length;i++){
+      const r=aoa[i]; if(!r||r.every(v=>v===''||v==null))continue;
+      const o={}; hdr.forEach((h,j)=>o[h]=r[j]); rows.push(o);
+    }
+    used.push(name);
+  }
+  S.raw=rows;S.headers=headers;
+  $('fileInfo').textContent=rows.length?`โหลดแล้ว ${used.length} ไฟล์ · ${fmt(rows.length)} แถว · ${headers.length} คอลัมน์`:'ไม่พบข้อมูล ตรวจสอบแถวหัวตาราง';
+  if(rows.length) setupMapping();
+}
+
+/* ---------- mapping UI ---------- */
+const guess={
+  sku:/รหัสสินค้า|sku|item\s*code|material|barcode|รหัส/i,
+  name:/ชื่อสินค้า|ชื่อ|description|item\s*name|product|รายการ/i,
+  branch:/สาขา|branch|store|site|plant|คลัง|location/i,
+  stock:/สต็อก|stock|คงเหลือ|on\s*hand|qty|balance|จำนวน/i,
+  value:/มูลค่า|value|amount|cost|ต้นทุน|บาท/i,
+  cat:/หมวด|กลุ่ม|category|dept|department|class|brand|แบรนด์/i,
+  last:/ขายล่าสุด|last\s*sale|last\s*sold|last\s*move|วันที่ขาย|ล่าสุด/i
+};
+function fillSel(id,key,optional){
+  const el=$(id);
+  let h=S.headers, pick=h.find(x=>guess[key].test(x));
+  el.innerHTML=(optional?'<option value="">— ไม่ใช้ —</option>':'')+h.map(x=>`<option ${x===pick?'selected':''}>${esc(x)}</option>`).join('');
+  if(optional&&!pick)el.value='';
+}
+function setupMapping(){
+  fillSel('mSku','sku');fillSel('mName','name',true);fillSel('mBranch','branch',true);
+  fillSel('mStock','stock');fillSel('mValue','value',true);fillSel('mCat','cat',true);fillSel('mLast','last',true);
+  // ตัวเลือกคอลัมน์ยอดขาย = คอลัมน์ที่ส่วนใหญ่เป็นตัวเลข
+  const numCols=S.headers.filter(h=>{const s=S.raw.slice(0,50).map(r=>r[h]);return s.filter(v=>typeof v==='number').length>s.length*.6});
+  $('salesCols').innerHTML=numCols.map(h=>`<label><input type="checkbox" value="${esc(h)}" ${/ยอดขาย|sale|ม\.ค|ก\.พ|มี\.ค|เม\.ย|พ\.ค|มิ\.ย|ก\.ค|ส\.ค|ก\.ย|ต\.ค|พ\.ย|ธ\.ค|jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec/i.test(h)?'checked':''}> ${esc(h)}</label>`).join('')||'<span class="mut">ไม่พบคอลัมน์ตัวเลข</span>';
+  if(!$('refDate').value)$('refDate').value=new Date().toISOString().slice(0,10);
+  $('sMap').classList.remove('hide');
+  // ถ้าไม่มีคอลัมน์วันที่ขายล่าสุด ให้เปลี่ยนเป็นโหมดยอดขาย
+  if(!$('mLast').value&&S.mode==='date')setMode('sales');
+}
+document.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>setMode(b.dataset.mode));
+function setMode(m){
+  S.mode=m;
+  document.querySelectorAll('[data-mode]').forEach(b=>b.classList.toggle('on',b.dataset.mode===m));
+  $('modeDate').classList.toggle('hide',m!=='date');
+  $('modeSales').classList.toggle('hide',m!=='sales');
+}
+
+/* ---------- helpers ---------- */
+function num(v){if(typeof v==='number')return v;if(v==null||v==='')return 0;const n=parseFloat(String(v).replace(/[,\s฿]/g,''));return isNaN(n)?0:n}
+function parseDate(v){
+  if(v==null||v==='')return null;
+  if(v instanceof Date)return isNaN(v)?null:v;
+  if(typeof v==='number'){ if(v>20000&&v<80000){const d=XLSX.SSF.parse_date_code(v);return new Date(d.y,d.m-1,d.d)} return null}
+  const s=String(v).trim(); let m;
+  if(m=s.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})/)){let y=+m[3];if(y<100)y+=2000;if(y>2400)y-=543;return new Date(y,+m[2]-1,+m[1])}
+  if(m=s.match(/^(\d{4})[\/\-.](\d{1,2})[\/\-.](\d{1,2})/)){let y=+m[1];if(y>2400)y-=543;return new Date(y,+m[2]-1,+m[3])}
+  const d=new Date(s);return isNaN(d)?null:d;
+}
+const bucketOf=d=>d==null?'ไม่เคยขาย':d<=30?'0-30':d<=60?'31-60':d<=90?'61-90':d<=180?'91-180':d<=365?'181-365':'>365';
+
+/* ---------- analysis ---------- */
+$('btnRun').onclick=analyze;
+function analyze(){
+  const c={sku:$('mSku').value,name:$('mName').value,branch:$('mBranch').value,stock:$('mStock').value,value:$('mValue').value,cat:$('mCat').value,last:$('mLast').value};
+  const salesCols=[...document.querySelectorAll('#salesCols input:checked')].map(x=>x.value);
+  if(!c.sku||!c.stock){alert('กรุณาเลือกคอลัมน์ รหัสสินค้า และ สต็อกคงเหลือ');return}
+  if(S.mode==='date'&&!c.last){alert('กรุณาเลือกคอลัมน์วันที่ขายล่าสุด หรือเปลี่ยนไปใช้วิธียอดขายรวม');return}
+  if(S.mode==='sales'&&!salesCols.length){alert('กรุณาเลือกคอลัมน์ยอดขายอย่างน้อย 1 คอลัมน์');return}
+  const ref=new Date($('refDate').value||Date.now());
+  S.res=S.raw.map(r=>{
+    const stock=num(r[c.stock]);
+    const o={sku:String(r[c.sku]??''),name:c.name?String(r[c.name]??''):'',branch:c.branch?String(r[c.branch]??''):'',cat:c.cat?String(r[c.cat]??''):'',stock,value:c.value?num(r[c.value]):null,days:null,lastSale:null,sales:null};
+    if(S.mode==='date'){
+      const d=parseDate(r[c.last]); o.lastSale=d;
+      o.days=d?Math.max(0,Math.floor((ref-d)/864e5)):null; // null = ไม่เคยขาย
+    }else{
+      o.sales=salesCols.reduce((a,h)=>a+num(r[h]),0);
+    }
+    return o;
+  }).filter(o=>o.sku||o.name);
+  S.cfg={hasBranch:!!c.branch,hasCat:!!c.cat,hasValue:!!c.value};
+  fillFilter('fBranch',S.res.map(o=>o.branch),!c.branch);
+  fillFilter('fCat',S.res.map(o=>o.cat),!c.cat);
+  $('thrRow').classList.toggle('hide',S.mode!=='date');
+  $('sResult').classList.remove('hide');
+  refresh();
+  $('sResult').scrollIntoView({behavior:'smooth'});
+}
+function fillFilter(id,arr,off){
+  const u=[...new Set(arr.filter(Boolean))].sort();
+  $(id).innerHTML='<option value="">ทั้งหมด</option>'+u.map(x=>`<option>${esc(x)}</option>`).join('');
+  $(id).parentElement.classList.toggle('hide',off);
+}
+const isNM=o=>o.stock>0&&(S.mode==='date'?(o.days==null||o.days>=S.thr):o.sales===0);
+
+$('thrChips').querySelectorAll('button').forEach(b=>b.onclick=()=>{S.thr=+b.dataset.d;$('thrCustom').value='';refresh()});
+$('thrCustom').oninput=e=>{const v=+e.target.value;if(v>0){S.thr=v;refresh()}};
+['q','fBranch','fCat'].forEach(id=>$(id).addEventListener('input',()=>{S.page=0;renderTable()}));
+
+function refresh(){
+  document.querySelectorAll('#thrChips button').forEach(b=>b.classList.toggle('on',!$('thrCustom').value&&+b.dataset.d===S.thr));
+  S.nm=S.res.filter(isNM);
+  const withStock=S.res.filter(o=>o.stock>0);
+  const sum=(a,f)=>a.reduce((x,o)=>x+(f(o)||0),0);
+  const nmQty=sum(S.nm,o=>o.stock),nmVal=sum(S.nm,o=>o.value);
+  const k=[
+    ['รายการที่มีสต็อก',fmt(withStock.length),''],
+    ['รายการ Non-move',fmt(S.nm.length),'bad'],
+    ['สัดส่วน Non-move',(withStock.length?S.nm.length/withStock.length*100:0).toFixed(1)+'%','bad'],
+    ['จำนวนสต็อก Non-move',fmt(nmQty),''],
+  ];
+  if(S.cfg.hasValue)k.push(['มูลค่า Non-move (บาท)',fmt(nmVal),'bad']);
+  $('kpis').innerHTML=k.map(x=>`<div class="kpi ${x[2]}"><div class="l">${x[0]}</div><div class="v">${x[1]}</div></div>`).join('');
+  renderChart();renderTable();
+}
+
+function renderChart(){
+  const key=S.cfg.hasBranch?'branch':(S.cfg.hasCat?'cat':null);
+  const useVal=S.cfg.hasValue;
+  const cv=$('chart').parentElement;
+  if(S.chart){S.chart.destroy();S.chart=null}
+  if(!key){cv.parentElement.classList.add('hide');return}
+  cv.parentElement.classList.remove('hide');
+  const m={};S.nm.forEach(o=>{const k=o[key]||'(ไม่ระบุ)';m[k]=(m[k]||0)+(useVal?o.value:1)});
+  const top=Object.entries(m).sort((a,b)=>b[1]-a[1]).slice(0,15);
+  $('chartTitle').textContent=`Top ${top.length} ${key==='branch'?'สาขา':'หมวด'} ที่มี Non-move มากที่สุด (${useVal?'มูลค่า บาท':'จำนวนรายการ'})`;
+  S.chart=new Chart($('chart'),{type:'bar',data:{labels:top.map(x=>x[0]),datasets:[{data:top.map(x=>x[1]),backgroundColor:'#e8590c',borderRadius:4}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>fmt(c.parsed.y)}}},scales:{y:{ticks:{callback:v=>fmt(v)}},x:{ticks:{maxRotation:60,minRotation:30}}}}});
+}
+
+/* ---------- table ---------- */
+function cols(){
+  const c=[{k:'sku',t:'รหัสสินค้า'},{k:'name',t:'ชื่อสินค้า'}];
+  if(S.cfg.hasBranch)c.push({k:'branch',t:'สาขา'});
+  if(S.cfg.hasCat)c.push({k:'cat',t:'หมวด'});
+  c.push({k:'stock',t:'สต็อก',n:1});
+  if(S.cfg.hasValue)c.push({k:'value',t:'มูลค่า',n:1});
+  if(S.mode==='date'){c.push({k:'lastSale',t:'ขายล่าสุด'},{k:'days',t:'ไม่เคลื่อนไหว (วัน)',n:1},{k:'bucket',t:'ช่วงอายุ'})}
+  else c.push({k:'sales',t:'ยอดขายรวม',n:1});
+  return c;
+}
+function renderTable(){
+  const q=$('q').value.trim().toLowerCase(),fb=$('fBranch').value,fc=$('fCat').value;
+  let v=S.nm.filter(o=>(!q||(o.sku+' '+o.name).toLowerCase().includes(q))&&(!fb||o.branch===fb)&&(!fc||o.cat===fc));
+  const key=S.sortKey,dir=S.sortDir;
+  const gv=o=>key==='bucket'?(o.days==null?1e9:o.days):key==='days'?(o.days==null?1e9:o.days):key==='lastSale'?(o.lastSale?+o.lastSale:0):o[key];
+  v.sort((a,b)=>{const x=gv(a),y=gv(b);if(x==null&&y==null)return 0;if(x==null)return 1;if(y==null)return -1;return (typeof x==='string'?x.localeCompare(y,'th'):x-y)*dir});
+  S.view=v;
+  const C=cols();
+  $('tbl').querySelector('thead').innerHTML='<tr>'+C.map(c=>`<th class="${c.n?'n':''}" data-k="${c.k}">${c.t}${S.sortKey===c.k?(S.sortDir>0?' ▲':' ▼'):''}</th>`).join('')+'</tr>';
+  $('tbl').querySelectorAll('th').forEach(th=>th.onclick=()=>{const k=th.dataset.k;S.sortDir=S.sortKey===k?-S.sortDir:-1;S.sortKey=k;renderTable()});
+  const maxP=Math.max(0,Math.ceil(v.length/S.PS)-1);if(S.page>maxP)S.page=maxP;
+  const slice=v.slice(S.page*S.PS,(S.page+1)*S.PS);
+  $('tbl').querySelector('tbody').innerHTML=slice.map(o=>'<tr>'+C.map(c=>{
+    let x;
+    if(c.k==='lastSale')x=o.lastSale?o.lastSale.toLocaleDateString('th-TH'):'<span class="tag r">ไม่เคยขาย</span>';
+    else if(c.k==='days')x=o.days==null?'-':fmt(o.days);
+    else if(c.k==='bucket')x=`<span class="tag ${o.days==null||o.days>180?'r':''}">${bucketOf(o.days)}</span>`;
+    else if(c.n)x=fmt(o[c.k]);
+    else x=esc(o[c.k]);
+    return `<td class="${c.n?'n':''}">${x}</td>`}).join('')+'</tr>').join('')||'<tr><td colspan="9" class="mut" style="padding:20px;text-align:center">ไม่พบรายการ</td></tr>';
+  $('pgInfo').textContent=`${fmt(v.length)} รายการ · หน้า ${S.page+1}/${maxP+1}`;
+  $('pgPrev').disabled=S.page<=0;$('pgNext').disabled=S.page>=maxP;
+}
+$('pgPrev').onclick=()=>{S.page--;renderTable()};
+$('pgNext').onclick=()=>{S.page++;renderTable()};
+
+/* ---------- export ---------- */
+$('btnExport').onclick=()=>{
+  const C=cols();
+  const rows=S.view.map(o=>{const r={};C.forEach(c=>{
+    r[c.t]=c.k==='lastSale'?(o.lastSale?o.lastSale.toISOString().slice(0,10):'ไม่เคยขาย'):c.k==='days'?(o.days==null?'':o.days):c.k==='bucket'?bucketOf(o.days):o[c.k]});return r});
+  const ws=XLSX.utils.json_to_sheet(rows),wb=XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb,ws,'NonMove');
+  XLSX.writeFile(wb,`nonmove_dohome_${new Date().toISOString().slice(0,10)}.xlsx`);
+};
+
+/* ---------- demo ---------- */
+$('btnDemo').onclick=()=>{
+  const br=['DoHome ปทุมธานี','DoHome ขอนแก่น','DoHome เชียงใหม่','DoHome หาดใหญ่','DoHome โคราช'];
+  const cats=['สีทาภายใน','สีทาภายนอก','สีรองพื้น','อุปกรณ์ทาสี','กันซึม'];
+  const rows=[['รหัสสินค้า','ชื่อสินค้า','สาขา','หมวด','สต็อกคงเหลือ','มูลค่าสต็อก','วันที่ขายล่าสุด']];
+  let seed=7;const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;
+  for(let i=0;i<400;i++){
+    const stock=Math.floor(rnd()*60), cost=80+Math.floor(rnd()*900);
+    const back=rnd()<.12?null:Math.floor(rnd()*rnd()*420);
+    const d=back==null?'':new Date(Date.now()-back*864e5);
+    rows.push(['B'+(10000+i%80),'สินค้าตัวอย่าง '+(i%80+1),br[i%5],cats[i%5],stock,stock*cost,d]);
+  }
+  const ws=XLSX.utils.aoa_to_sheet(rows,{cellDates:true}),wb=XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb,ws,'Sheet1');
+  S.wbs=[{name:'ตัวอย่าง.xlsx',wb}];
+  $('sheetWrap').classList.add('hide');rebuild();
+};
+</script>
+</body>
+</html>

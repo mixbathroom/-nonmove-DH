@@ -315,8 +315,6 @@ tr.tap{cursor:pointer}
         <button class="filter" data-age="730" onclick="setFilter(this)">&gt; 2 ปี</button>
         <button class="filter" data-age="365" onclick="setFilter(this)">1 ปี</button>
         <button class="filter" data-age="270" onclick="setFilter(this)">270 วัน</button>
-        <button class="filter" data-age="180" onclick="setFilter(this)">180 วัน</button>
-        <button class="filter" data-age="90" onclick="setFilter(this)">90 วัน</button>
       </div>
     </div>
 
@@ -394,6 +392,7 @@ function badgeClass(age){return age>=365?"red":age>=270?"orange":age>=180?"yello
 function branchItems(includeInactive=false){
   return DB.items.filter(x=>{
     if(!x.branch || !x.sku) return false;
+    if(x.age===180 || x.age===90) return false;
     const branchOk = currentBranch===ALL_BRANCHES ? true : x.branch===currentBranch;
     return branchOk && (includeInactive || !x.inactive);
   });
@@ -445,7 +444,6 @@ function renderKpis(){
     ["Nonmove > 2 ปี",cnt(730),itemUnit,"red",ageValue(730)],
     ["Nonmove 1 ปี",cnt(365),itemUnit,"red",ageValue(365)],
     ["Nonmove 270 วัน",cnt(270),itemUnit,"orange",ageValue(270)],
-    ["Nonmove 180 วัน",cnt(180),itemUnit,"yellow",ageValue(180)],
     ["Stock Nonmove",qty(totalStock),"ชิ้น/หน่วย","blue",null],
     ["มูลค่าสต็อก","฿"+money(totalValue),"บาท (รวม VAT 7%)","green",null],
   ];
@@ -522,7 +520,7 @@ function renderTable(){
   document.getElementById("tableHead").innerHTML=`<tr>
     <th>SKU</th><th>สินค้า</th>${isAll?"<th>สาขา</th>":""}<th>ระดับ</th>
     <th class="right">Stock</th><th class="right">ราคาขาย/หน่วย</th>
-    <th class="right vh">มูลค่าสต็อก</th><th class="hm">ขายล่าสุด</th><th class="right hm">DOH</th><th class="hm"></th>
+    <th class="right vh hm">มูลค่าสต็อก</th><th class="hm">ขายล่าสุด</th><th class="right hm">DOH</th><th class="hm"></th>
   </tr>`;
 
   const body=document.getElementById("tableBody");
@@ -541,7 +539,7 @@ function renderTable(){
     <td><span class="badge ${badgeClass(i.age)}">${ageText(i)}</span></td>
     <td class="right">${qty(i.stock)} ${escapeHtml(i.unit)}</td>
     <td class="right">฿${money(unitPlusGP(i))}</td>
-    <td class="right">฿${money(plusGP(i.value))}</td>
+    <td class="right hm">฿${money(plusGP(i.value))}</td>
     <td class="hm">${fmtDate(i.lastSale)}</td>
     <td class="right hm">${i.doh>=999?"ไม่มีขาย 56 วัน":money(i.doh)}</td>
     <td class="hm"><button class="open-btn" onclick='openDetailBySku(${JSON.stringify(i.sku)},${JSON.stringify(i.branch)})'>ดู</button></td>
@@ -729,7 +727,7 @@ function scrollToId(id){document.getElementById(id)?.scrollIntoView({behavior:"s
 function toast(t){const e=document.getElementById("toast");e.textContent=t;e.classList.add("show");setTimeout(()=>e.classList.remove("show"),1800)}
 function homeItems(){
   const all=!currentBranch||currentBranch===ALL_BRANCHES;
-  return DB.items.filter(x=>x.branch&&x.sku&&!x.inactive&&(all||x.branch===currentBranch));
+  return DB.items.filter(x=>x.branch&&x.sku&&!x.inactive&&x.age!==180&&x.age!==90&&(all||x.branch===currentBranch));
 }
 function renderHome(){
   const all=!currentBranch||currentBranch===ALL_BRANCHES;

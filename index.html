@@ -115,13 +115,131 @@ tr:hover td{background:#fbfdff}
   .desktop-label{display:none}.bottom-nav{display:flex;position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);z-index:30;justify-content:space-around;padding:7px 7px max(7px,env(safe-area-inset-bottom))}
   .bottom-nav button{border:0;background:none;color:#617083;font-size:11px;display:grid;gap:2px;place-items:center}.bottom-nav b{font-size:18px}.bottom-nav button.active{color:var(--blue);font-weight:800}
 }
+
+/* ===== หน้าแรก / คู่มือ ===== */
+.top-tabs{display:flex;gap:6px}
+.top-tabs button{border:1px solid rgba(255,255,255,.25);background:transparent;color:#fff;border-radius:10px;padding:7px 12px;font-weight:750;font-size:13px}
+.top-tabs button.active{background:#fff;color:#073b78;border-color:#fff}
+body.on-home .export-btn{display:none}
+.home{max-width:1180px;margin:auto;padding:18px 16px 96px}
+.h-hero{display:flex;align-items:center;justify-content:space-between;gap:20px;background:linear-gradient(135deg,#052f64,#0a579f);color:#fff;border-radius:22px;padding:28px;box-shadow:0 14px 34px rgba(4,45,91,.25)}
+.h-kicker{display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);padding:4px 10px;border-radius:999px;font-size:12px;font-weight:800;margin-bottom:10px}
+.h-hero h1{font-size:32px;line-height:1.3;margin:0 0 10px}.h-hero h1 span{color:#ffb066}
+.h-hero p{margin:0 0 16px;opacity:.93;font-size:15px;line-height:1.7;max-width:640px}
+.h-hero-actions{display:flex;gap:10px;flex-wrap:wrap}
+.h-cta{border:0;background:#ff8a2b;color:#fff;font-weight:850;font-size:16px;padding:13px 20px;border-radius:14px;box-shadow:0 8px 18px rgba(255,138,43,.35)}
+.h-ghost{border:1px solid rgba(255,255,255,.4);background:transparent;color:#fff;font-weight:750;padding:12px 16px;border-radius:14px}
+.h-hero-badge{flex:0 0 auto;width:132px;height:132px;border-radius:50%;background:rgba(255,255,255,.12);border:2px solid rgba(255,255,255,.3);display:grid;place-content:center;text-align:center}
+.h-hero-badge b{font-size:56px;line-height:1;font-weight:900}.h-hero-badge span{font-size:15px;font-weight:800;opacity:.9}
+.scope{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:16px 0 6px;padding:10px 14px;background:#fff;border:1px solid var(--line);border-radius:14px}
+.scope .sc-l{font-size:13px;color:var(--muted)}.scope .sc-l b{color:var(--ink);font-size:15px}
+.scope button{border:0;background:#edf4ff;color:var(--blue);font-weight:800;border-radius:10px;padding:8px 12px}
+.h-title{font-size:22px;margin:24px 0 4px}.h-sub{margin:0 0 12px;color:var(--muted);font-size:14px}
+.goals{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.goal{padding:18px;border-radius:18px;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow)}
+.goal.g1{border-top:6px solid var(--red)}.goal.g2{border-top:6px solid var(--orange)}
+.goal-tag{font-size:12px;font-weight:850;color:var(--muted)}
+.goal h3{font-size:19px;line-height:1.45;margin:4px 0 14px}
+.goal h3 em{font-style:normal;color:var(--red)}.goal.g2 h3 em{color:#dd7416}
+.g1-flow{display:flex;align-items:stretch;gap:8px}
+.g1-box{flex:1;border-radius:14px;padding:12px 8px;text-align:center}
+.g1-now{background:var(--redBg)}.g1-goal{background:var(--greenBg)}
+.g1-box .t{font-size:12px;color:var(--muted);font-weight:700}
+.g1-box .n{font-size:32px;font-weight:900;line-height:1.2}.g1-now .n{color:var(--red)}.g1-goal .n{color:var(--green)}
+.g1-box .v{font-size:12px;font-weight:800;margin-top:2px;color:#344054}
+.g1-arrow{display:grid;place-items:center;text-align:center;font-size:11px;font-weight:850;color:var(--muted);min-width:54px}
+.g1-arrow b{display:block;font-size:22px;color:var(--navy)}
+.bar-row{margin:10px 0}
+.bar-label{display:flex;justify-content:space-between;gap:8px;font-size:12px;color:var(--muted);margin-bottom:4px}.bar-label b{color:var(--ink);font-size:13px}
+.bar{height:28px;border-radius:9px;background:#eef2f7;position:relative;overflow:hidden}
+.bar i{position:absolute;left:0;top:0;bottom:0;border-radius:9px}
+.bar.now i{width:100%;background:linear-gradient(90deg,#f6a04a,#e8590c)}
+.bar.tgt i{width:80%;background:linear-gradient(90deg,#2fbf7e,#159957)}
+.bar.tgt .cut{position:absolute;left:80%;right:0;top:0;bottom:0;background:repeating-linear-gradient(45deg,#ffe3e0,#ffe3e0 6px,#fff 6px,#fff 12px);display:grid;place-items:center;font-size:11px;font-weight:850;color:var(--red)}
+.need{margin-top:10px;padding:10px 12px;border-radius:12px;background:var(--orangeBg);color:#a85408;font-size:14px;font-weight:800}
+.example{margin-top:10px;background:#fff9e5;border:1px dashed #e0b400;border-radius:12px;padding:10px 12px;font-size:13px;line-height:1.7}
+.goal-ok{margin-top:10px;padding:10px 12px;border-radius:12px;background:var(--greenBg);color:#0e7a44;font-size:14px;font-weight:800}
+.legend{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.lg{padding:12px;border-radius:14px;background:#fff;border:1px solid var(--line);font-size:12px;color:var(--muted);line-height:1.5}
+.lg .badge{font-size:13px;margin-bottom:6px}.lg b{color:var(--ink)}
+.steps{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.step{display:grid;grid-template-columns:44px 1fr;gap:12px;padding:16px}
+.step-no{width:40px;height:40px;border-radius:50%;background:var(--navy);color:#fff;font-weight:900;font-size:18px;display:grid;place-items:center}
+.step h4{margin:2px 0 4px;font-size:17px}
+.step p{margin:0 0 10px;color:#4b5565;font-size:14px;line-height:1.65}
+.mock{border:1px solid var(--line);background:#f8fafc;border-radius:12px;padding:10px;font-size:12px;pointer-events:none;user-select:none}
+.fake-btn{display:inline-block;background:#edf4ff;color:var(--blue);font-weight:800;border-radius:8px;padding:5px 9px;font-size:12px}
+.mock-pill{display:flex;align-items:center;justify-content:space-between;gap:8px;background:#073b78;color:#fff;border-radius:10px;padding:8px 10px}
+.mock-pill .fake-btn{background:#fff}
+.mini-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.mini-kpi{border-radius:10px;padding:8px;background:#fff;border:1px solid var(--line);font-size:11px;color:var(--muted)}
+.mini-kpi b{display:block;font-size:12px;margin-bottom:2px}
+.mini-kpi.r b{color:var(--red)}.mini-kpi.o b{color:#dd7416}.mini-kpi.y b{color:#b18400}
+.mock .pills{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}
+.mock .pills span{border:1px solid var(--line);background:#fff;border-radius:999px;padding:4px 8px;font-weight:750;font-size:11px}
+.mock .pills span.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.fake-search{background:#fff;border:1px solid var(--line);border-radius:10px;padding:7px 10px;color:#8490a0}
+.mock-actions{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
+.mock-actions span{border-radius:9px;padding:8px 6px;color:#fff;font-weight:800;text-align:center;font-size:12px}
+.mock-actions .a1{background:var(--green)}.mock-actions .a2{background:var(--blue)}.mock-actions .a3{background:var(--orange)}.mock-actions .a4{background:var(--purple)}
+.fake-export{display:inline-block;background:#16a05d;color:#fff;border-radius:10px;padding:8px 12px;font-weight:800}
+.know{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+.know li{font-size:13.5px;line-height:1.6;color:#4b5565}.know b{color:var(--ink)}
+.h-bottom{margin-top:22px;text-align:center;padding:22px;border-radius:18px;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow)}
+.h-bottom p{margin:0 0 12px;font-size:16px;font-weight:750}
+@media(max-width:900px){.goals,.steps{grid-template-columns:1fr}.legend{grid-template-columns:repeat(2,1fr)}.top-tabs{display:none}}
+@media(max-width:620px){
+  .home{padding:12px 11px 92px}.h-hero{padding:20px 16px;flex-direction:column;align-items:flex-start}
+  .h-hero h1{font-size:25px}.h-hero-badge{position:absolute;right:16px;top:14px;width:70px;height:70px;display:none}
+  .h-cta{width:100%}.h-ghost{width:100%}
+  .goal{padding:15px}.goal h3{font-size:17px}.g1-box .n{font-size:26px}
+  .step{padding:14px;grid-template-columns:38px 1fr}.step-no{width:34px;height:34px;font-size:16px}
+}
+
+/* ===== เป้าหมายให้เด่น ===== */
+.h-title.big{font-size:28px}
+.h-pills{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 16px}
+.h-pills span{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);padding:8px 14px;border-radius:999px;font-size:15px;font-weight:700}
+.h-pills b{color:#ffb066;font-weight:900}
+.sc-hint{margin-top:3px;font-size:12.5px;color:var(--muted)}
+.goal{padding:0;overflow:hidden;border:2px solid var(--red);border-top:2px solid var(--red)}
+.goal.g2{border-color:var(--orange);border-top:2px solid var(--orange)}
+.goal-band{display:flex;align-items:center;gap:10px;padding:12px 16px;color:#fff;font-weight:900;font-size:21px;background:linear-gradient(135deg,#e53935,#c62828)}
+.goal.g2 .goal-band{background:linear-gradient(135deg,#f28c28,#e8590c)}
+.goal-no{width:38px;height:38px;border-radius:50%;background:#fff;color:#c62828;display:grid;place-items:center;font-size:22px;font-weight:900;flex:0 0 auto}
+.goal.g2 .goal-no{color:#e8590c}
+.goal-days{margin-left:auto;background:rgba(255,255,255,.22);padding:5px 12px;border-radius:999px;font-size:14px;white-space:nowrap}
+.goal-body{padding:18px}
+.goal-what{font-size:21px;font-weight:800;line-height:1.4}
+.goal-what b{color:var(--red)}
+.goal-big{font-size:46px;line-height:1.15;font-weight:900;color:var(--red);margin:2px 0 14px}
+.goal.g2 .goal-big{color:#e8590c}
+@media(max-width:620px){
+  .h-title.big{font-size:24px}.goal-band{font-size:18px;padding:10px 12px}.goal-no{width:32px;height:32px;font-size:18px}
+  .goal-days{font-size:12px;padding:4px 9px}.goal-body{padding:14px}.goal-what{font-size:18px}.goal-big{font-size:34px}
+  .h-pills span{font-size:13.5px}
+}
+
+.brand-store{margin-left:4px;padding:4px 11px;border-radius:9px;background:#ff8a2b;color:#fff;font-size:15px;font-weight:850;letter-spacing:.2px;white-space:nowrap}
+@media(max-width:620px){.brand-store{font-size:12px;padding:3px 7px;margin-left:0}.brand{gap:6px}}
+
+@media(max-width:480px){
+  .topbar{padding:8px 8px}.top-inner{gap:6px}.brand-b{font-size:14px;padding:3px 6px}.brand-title{font-size:12px;line-height:1.15}
+  .brand-store{font-size:11px;padding:3px 6px}.brand{gap:5px}
+  .export-btn{font-size:11px;padding:6px 7px}.branch-pill{padding:4px 5px;gap:4px}.branch-pill button{font-size:11px;padding:6px 7px}
+  .top-inner>div:last-child{gap:5px!important}
+}
+@media(max-width:340px){.brand-title{display:none}}
+.goal-big{font-size:34px;margin:0 0 12px}.goal-what{font-size:18px}
+@media(max-width:620px){.goal-big{font-size:27px}.goal-what{font-size:16px}}
 </style>
 </head>
 <body>
 <div class="app">
   <header class="topbar">
     <div class="top-inner">
-      <div class="brand"><span class="brand-b">Beger</span><span class="brand-title">Nonmove <span>Focus</span></span></div>
+      <div class="brand"><span class="brand-b">Beger</span><span class="brand-title">Nonmove <span>Focus</span></span><span class="brand-store">DoHome</span></div>
+      <nav class="top-tabs"><button id="tabHome" onclick="showView('home')">🏠 หน้าแรก</button><button id="tabList" onclick="showView('list')">📋 รายการสินค้า</button></nav>
       <div style="display:flex;align-items:center;gap:8px">
         <button class="export-btn" onclick="exportExcel()">⬇ Export Excel</button>
         <div class="branch-pill"><span>📍 <b id="branchName">ยังไม่ได้เลือกสาขา</b></span><button onclick="openBranchChooser()">เปลี่ยนสาขา</button></div>
@@ -129,7 +247,118 @@ tr:hover td{background:#fbfdff}
     </div>
   </header>
 
-  <main>
+  <main class="home" id="homeView">
+    <section class="h-hero">
+      <div>
+        <div class="h-kicker">DoHome · ภารกิจ Nonmove Focus</div>
+        <h1>ช่วยกันเคลียร์สินค้า Nonmove<br>ภายใน <span>60 วัน</span></h1>
+        <p>Nonmove คือสินค้าที่ค้างอยู่ในสต็อกโดยไม่มียอดขายมานาน ยิ่งค้างนานยิ่งจมเงิน ทุกคนช่วยกันขายให้ได้ตามเป้าหมาย 2 ข้อนี้</p>
+        <div class="h-pills"><span>🎯 เกิน 1 ปี → <b>เหลือ 0</b></span><span>🎯 มูลค่า Nonmove <b>ลด 20%</b></span></div>
+        <div class="h-hero-actions">
+          <button class="h-cta" onclick="startUsing()">ดูรายการสินค้า →</button>
+          <button class="h-ghost" onclick="scrollToId('guide')">อ่านคู่มือใช้งาน</button>
+        </div>
+      </div>
+      <div class="h-hero-badge" aria-hidden="true"><div><b>60</b><span>วัน</span></div></div>
+    </section>
+
+    <h2 class="h-title big">🎯 เป้าหมายของเรา</h2>
+    <p class="h-sub">มี 2 เป้าหมาย ต้องทำให้สำเร็จภายใน 60 วัน</p>
+    <div class="scope">
+      <div class="sc-l">ตัวเลขด้านล่างเป็นของ <b id="homeScope"></b><div id="homeHint" class="sc-hint"></div></div>
+      <button onclick="openBranchChooser()">เปลี่ยนสาขา</button>
+    </div>
+
+    <div class="goals">
+      <article class="goal g1">
+        <div class="goal-band"><span class="goal-no">1</span><span>เป้าหมายที่ 1</span><span class="goal-days">ภายใน 60 วัน</span></div>
+        <div class="goal-body">
+          <div class="goal-what">สินค้า Nonmove <b>เกิน 1 ปี</b></div>
+          <div class="goal-big">ต้องเหลือ 0</div>
+          <div class="g1-flow">
+            <div class="g1-box g1-now"><div class="t">ตอนนี้</div><div class="n" id="g1Count">-</div><div class="l" id="g1Unit" style="font-size:12px;color:#667085"></div><div class="v" id="g1Value"></div></div>
+            <div class="g1-arrow"><div><b>➜</b>60 วัน</div></div>
+            <div class="g1-box g1-goal"><div class="t">เป้าหมาย</div><div class="n">0</div><div class="l" style="font-size:12px;color:#667085">ไม่เหลือเลย</div><div class="v">฿0</div></div>
+          </div>
+          <div id="g1Msg"></div>
+          <p style="margin:10px 0 0;font-size:12.5px;color:var(--muted);line-height:1.6">นับรวมสินค้าที่ไม่มียอดขาย 1 ปี และมากกว่า 2 ปี (ป้ายสีแดงในตาราง)</p>
+        </div>
+      </article>
+
+      <article class="goal g2">
+        <div class="goal-band"><span class="goal-no">2</span><span>เป้าหมายที่ 2</span><span class="goal-days">ภายใน 60 วัน</span></div>
+        <div class="goal-body">
+          <div class="goal-what">มูลค่า Nonmove ทั้งหมด</div>
+          <div class="goal-big">ลดลง 20% ขึ้นไป</div>
+          <div class="bar-row"><div class="bar-label"><span>มูลค่า Nonmove ตอนนี้</span><b id="g2Now">-</b></div><div class="bar now"><i></i></div></div>
+          <div class="bar-row"><div class="bar-label"><span>ต้องเหลือไม่เกิน (ภายใน 60 วัน)</span><b id="g2Target">-</b></div><div class="bar tgt"><i></i><div class="cut">−20%</div></div></div>
+          <div class="need" id="g2Need"></div>
+          <div class="example"><b>ตัวอย่าง:</b> ถ้ามี Nonmove รวม <b>1,000,000 บาท</b> ภายใน 60 วันต้องเหลือไม่เกิน <b>800,000 บาท</b> (ขายออกอย่างน้อย 200,000 บาท)</div>
+        </div>
+      </article>
+    </div>
+    <p class="h-sub" style="margin-top:10px">มูลค่าในระบบคิดจากราคาทุน +18% เหมือนกับตัวเลขในตารางรายการสินค้า</p>
+
+    <h2 class="h-title">🏷️ อ่านสีป้ายอายุสินค้า</h2>
+    <p class="h-sub">ตัวเลขคือจำนวนวันที่สินค้านั้นไม่มียอดขาย เริ่มจากสีแดงก่อนเสมอ</p>
+    <div class="legend">
+      <div class="lg"><span class="badge red">&gt; 2 ปี</span><br><b>ค้างนานที่สุด</b><br>ไม่มียอดขายเกิน 2 ปี</div>
+      <div class="lg"><span class="badge red">1 ปี</span><br><b>ค้างนานมาก</b><br>ไม่มียอดขายเกิน 1 ปี</div>
+      <div class="lg"><span class="badge orange">270 วัน</span><br><b>เริ่มน่ากังวล</b><br>ไม่มียอดขายเกิน 270 วัน</div>
+      <div class="lg"><span class="badge yellow">180 วัน</span><br><b>เฝ้าระวัง</b><br>ไม่มียอดขายเกิน 180 วัน</div>
+      <div class="lg"><span class="badge blue">90 วัน</span><br><b>เพิ่งเริ่มค้าง</b><br>ไม่มียอดขายเกิน 90 วัน</div>
+    </div>
+
+    <h2 class="h-title" id="guide">📖 คู่มือใช้งาน ทำตามได้ใน 5 ขั้นตอน</h2>
+    <p class="h-sub">ใช้บนมือถือหรือคอมพิวเตอร์ก็ได้ หน้าตาเหมือนกัน</p>
+    <div class="steps">
+      <div class="card step"><div class="step-no">1</div><div>
+        <h4>เลือกสาขาของคุณ</h4>
+        <p>กดปุ่ม <b>เปลี่ยนสาขา</b> ที่มุมขวาบน แล้วเลือก DoHome สาขาที่คุณดูแล ระบบเริ่มต้นที่ <b>ทุกสาขา</b> เลือกแล้วระบบจะจำไว้ ไม่ต้องเลือกซ้ำทุกครั้ง</p>
+        <div class="mock" aria-hidden="true"><div class="mock-pill"><span>📍 <b>DoHome ขอนแก่น</b></span><span class="fake-btn">เปลี่ยนสาขา</span></div></div>
+      </div></div>
+      <div class="card step"><div class="step-no">2</div><div>
+        <h4>ดูภาพรวมจากการ์ดด้านบน</h4>
+        <p>การ์ดแต่ละใบบอก <b>จำนวนสินค้า</b> และ <b>มูลค่า</b> ของสินค้าแต่ละช่วงอายุ การ์ดสีแดงคือกลุ่มที่ต้องเคลียร์ก่อน</p>
+        <div class="mock" aria-hidden="true"><div class="mini-kpis">
+          <div class="mini-kpi r"><b>&gt; 2 ปี</b>จำนวน + มูลค่า</div>
+          <div class="mini-kpi r"><b>1 ปี</b>จำนวน + มูลค่า</div>
+          <div class="mini-kpi o"><b>270 วัน</b>จำนวน + มูลค่า</div>
+        </div></div>
+      </div></div>
+      <div class="card step"><div class="step-no">3</div><div>
+        <h4>กรองตามอายุ หรือค้นหาสินค้า</h4>
+        <p>กดปุ่มอายุ เช่น <b>&gt; 2 ปี</b> หรือพิมพ์รหัส SKU / ชื่อสินค้าในช่องค้นหา รายการที่อยู่บนสุดคือสินค้าที่ค้างนานที่สุดและมูลค่าสูงสุด ให้ขายตัวบน ๆ ก่อน</p>
+        <div class="mock" aria-hidden="true"><div class="fake-search">⌕ ค้นหา SKU / ชื่อสินค้า...</div>
+          <div class="pills"><span class="on">ทั้งหมด</span><span>&gt; 2 ปี</span><span>1 ปี</span><span>270 วัน</span><span>180 วัน</span><span>90 วัน</span></div></div>
+      </div></div>
+      <div class="card step"><div class="step-no">4</div><div>
+        <h4>กด "ดู" แล้วบันทึกผล</h4>
+        <p>กดปุ่ม <b>ดู</b> ท้ายแถวสินค้า จะเห็นสต็อก วันที่ขายล่าสุด และยอดขาย 56 วัน จากนั้นกดบันทึกว่าเกิดอะไรขึ้น ถ้าขายได้ให้ใส่ <b>จำนวนที่ขายได้</b> ก่อนกด</p>
+        <div class="mock" aria-hidden="true"><div class="mock-actions"><span class="a1">✅ ขายแล้ว</span><span class="a2">💙 ลูกค้าสนใจ</span><span class="a3">🔎 หาสินค้าไม่เจอ</span><span class="a4">🆘 ขอ Support</span></div></div>
+      </div></div>
+      <div class="card step"><div class="step-no">5</div><div>
+        <h4>Export เป็น Excel เมื่อต้องการ</h4>
+        <p>กดปุ่มสีเขียว <b>Export Excel</b> ที่แถบด้านบน จะได้ไฟล์ .xlsx ของสาขาและตัวกรองอายุที่เลือกอยู่ ไว้เปิดดูหรือส่งต่อได้</p>
+        <div class="mock" aria-hidden="true"><span class="fake-export">⬇ Export Excel</span></div>
+      </div></div>
+      <div class="card step"><div class="step-no">💡</div><div>
+        <h4>ข้อควรรู้</h4>
+        <ul class="know">
+          <li><b>+18%</b> = มูลค่าคิดจากราคาทุนบวก 18%</li>
+          <li><b>DOH</b> = จำนวนวันที่สต็อกพอขาย ถ้าขึ้น "ไม่มีขาย 56 วัน" คือไม่มียอดขายเลยใน 56 วันล่าสุด</li>
+          <li><b>ที่บันทึกผลไว้จะเก็บในเครื่องนี้เท่านั้น</b> ยังไม่ถูกส่งเข้าระบบกลาง ถ้าเปลี่ยนเครื่องหรือล้างข้อมูลเบราว์เซอร์ บันทึกจะหายไป</li>
+        </ul>
+      </div></div>
+    </div>
+
+    <div class="h-bottom">
+      <p>พร้อมแล้ว เริ่มเคลียร์ Nonmove กันเลย</p>
+      <button class="h-cta" onclick="startUsing()">ดูรายการสินค้า →</button>
+    </div>
+  </main>
+
+  <main id="listView" style="display:none">
     <div class="hero">
       <div><h1>สวัสดีครับ น้อง PC 👋</h1><p>เลือกดูรายการ Nonmove ของสาขาคุณ ค้นหาและกรองตามอายุสินค้าได้ทันที</p></div>
       <div class="updated">ข้อมูลจากไฟล์ Nonmove ที่แนบ</div>
@@ -161,15 +390,15 @@ tr:hover td{background:#fbfdff}
   </main>
 
   <nav class="bottom-nav">
-    <button class="active" onclick="scrollToId('allItems')"><b>⌂</b>หน้าหลัก</button>
-    <button onclick="scrollToId('allItems')"><b>▦</b>สินค้า</button>
+    <button id="navHome" class="active" onclick="showView('home')"><b>⌂</b>หน้าแรก</button>
+    <button id="navList" onclick="showView('list')"><b>▦</b>สินค้า</button>
     <button onclick="openBranchChooser()"><b>⌖</b>สาขา</button>
   </nav>
 </div>
 
 <div class="modal-backdrop" id="branchModal">
   <div class="modal">
-    <div class="modal-head"><h3>เลือกสาขาของคุณ</h3><p>เลือกครั้งแรกครั้งเดียว ระบบจะจำสาขานี้ไว้บนอุปกรณ์นี้</p></div>
+    <div class="modal-head"><h3>เลือกสาขาของคุณ</h3><p>เริ่มต้นแสดงทุกสาขา เลือกสาขาที่คุณดูแลเพื่อดูเฉพาะสาขานั้น ระบบจะจำไว้บนอุปกรณ์นี้</p></div>
     <div class="modal-body"><div class="branch-grid" id="branchGrid"></div></div>
   </div>
 </div>
@@ -188,7 +417,7 @@ const DB = {"branches":["กาญจนบุรี","ขอนแก่น","�
 const ALL_BRANCHES = "__ALL__";
 const LS_BRANCH = "beger_nonmove_branch_v1";
 const LS_ACTIONS = "beger_nonmove_actions_v1";
-let currentBranch = localStorage.getItem(LS_BRANCH) || "";
+let currentBranch = localStorage.getItem(LS_BRANCH) || ALL_BRANCHES;
 let currentFilter = "all";
 let currentItem = null;
 
@@ -395,23 +624,6 @@ function exportExcel(){
     i.doh>=999 ? "ไม่มีขาย 56 วัน" : i.doh
   ]);
 
-  // Excel 2003 XML (SpreadsheetML) opens directly in Microsoft Excel without external libraries.
-  const style = `
-    <Styles>
-      <Style ss:ID="Default" ss:Name="Normal">
-        <Alignment ss:Vertical="Center"/>
-        <Font ss:FontName="Tahoma" x:CharSet="222" ss:Size="10"/>
-      </Style>
-      <Style ss:ID="Title"><Font ss:FontName="Tahoma" x:CharSet="222" ss:Size="14" ss:Bold="1"/></Style>
-      <Style ss:ID="Header">
-        <Font ss:FontName="Tahoma" x:CharSet="222" ss:Bold="1" ss:Color="#FFFFFF"/>
-        <Interior ss:Color="#0B4F91" ss:Pattern="Solid"/>
-        <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
-      </Style>
-      <Style ss:ID="Money"><NumberFormat ss:Format="#,##0.00"/></Style>
-      <Style ss:ID="Number"><NumberFormat ss:Format="#,##0.00"/></Style>
-    </Styles>`;
-
   const infoRows = [
     ["Beger Nonmove Focus"],
     ["ขอบเขต", isAll ? "ทุกสาขา" : `DoHome ${currentBranch}`],
@@ -420,58 +632,75 @@ function exportExcel(){
     ["มูลค่า Stock +18% รวม (บาท)", Math.round(arr.reduce((s,i)=>s+plusGP(i.value),0)*100)/100],
     [""]
   ];
-
-  const makeCell=(v,type="String",styleId="") =>
-    `<Cell${styleId?` ss:StyleID="${styleId}"`:""}><Data ss:Type="${type}">${excelXmlEscape(v)}</Data></Cell>`;
-
-  let xmlRows="";
+  // Build a real .xlsx (zip of OOXML parts) with no external library, so Excel opens it without the format/extension warning.
+  const colName=n=>{let t="";n++;while(n>0){const m=(n-1)%26;t=String.fromCharCode(65+m)+t;n=Math.floor((n-1)/26)}return t};
+  const cellX=(r,c,v,st)=>{
+    const ref=colName(c)+(r+1), sAttr=st?` s="${st}"`:"";
+    if(typeof v==="number"&&isFinite(v)) return `<c r="${ref}"${sAttr}><v>${v}</v></c>`;
+    const t=excelXmlEscape(v==null?"":v);
+    return `<c r="${ref}"${sAttr} t="inlineStr"><is><t xml:space="preserve">${t}</t></is></c>`;
+  };
+  const stockIdx=isAll?4:3, unitPriceIdx=isAll?6:5, stockValueIdx=isAll?7:6, sales56Idx=isAll?9:8;
+  let sheetRows="", rn=0;
   infoRows.forEach((r,idx)=>{
-    xmlRows += "<Row>";
-    r.forEach((v,j)=>{
-      const isNum = typeof v==="number";
-      xmlRows += makeCell(v,isNum?"Number":"String",idx===0&&j===0?"Title":(isNum?"Number":""));
-    });
-    xmlRows += "</Row>";
+    sheetRows+=`<row r="${rn+1}">`+r.map((v,j)=>cellX(rn,j,v,idx===0&&j===0?1:(typeof v==="number"?3:0))).join("")+"</row>";
+    rn++;
   });
-
-  xmlRows += "<Row>";
-  headers.forEach(h=>xmlRows += makeCell(h,"String","Header"));
-  xmlRows += "</Row>";
-
+  sheetRows+=`<row r="${rn+1}" ht="22" customHeight="1">`+headers.map((h,j)=>cellX(rn,j,h,2)).join("")+"</row>";
+  const headerRowNo=rn+1; rn++;
   rows.forEach(r=>{
-    xmlRows += "<Row>";
-    r.forEach((v,idx)=>{
-      const base = isAll ? 0 : -1;
-      // Numeric columns: stock, unit price +18, stock value +18, sales56
-      const stockIdx = isAll ? 4 : 3;
-      const unitPriceIdx = isAll ? 6 : 5;
-      const stockValueIdx = isAll ? 7 : 6;
-      const sales56Idx = isAll ? 9 : 8;
-      const isNum = [stockIdx,unitPriceIdx,stockValueIdx,sales56Idx].includes(idx) && typeof v==="number";
-      const moneyCol = [unitPriceIdx,stockValueIdx].includes(idx);
-      xmlRows += makeCell(v,isNum?"Number":"String", moneyCol?"Money":(isNum?"Number":""));
-    });
-    xmlRows += "</Row>";
+    sheetRows+=`<row r="${rn+1}">`+r.map((v,j)=>cellX(rn,j,v,(j===unitPriceIdx||j===stockValueIdx)&&typeof v==="number"?3:((j===stockIdx||j===sales56Idx)&&typeof v==="number"?4:0))).join("")+"</row>";
+    rn++;
   });
-
-  const xml = `<?xml version="1.0"?>
-<?mso-application progid="Excel.Sheet"?>
-<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
- xmlns:o="urn:schemas-microsoft-com:office:office"
- xmlns:x="urn:schemas-microsoft-com:office:excel"
- xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">
- ${style}
- <Worksheet ss:Name="Nonmove">
-  <Table>
-   ${xmlRows}
-  </Table>
-  <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
-   <FreezePanes/><FrozenNoSplit/><SplitHorizontal>7</SplitHorizontal><TopRowBottomPane>7</TopRowBottomPane><ActivePane>2</ActivePane>
-  </WorksheetOptions>
- </Worksheet>
-</Workbook>`;
-
-  const blob=new Blob(["\ufeff"+xml],{type:"application/vnd.ms-excel;charset=utf-8"});
+  const widths=headers.map((h,j)=>{
+    if(j===(isAll?2:1)) return 44;                 // สินค้า
+    if(isAll&&j===0) return 20;                    // สาขา
+    if(h==="SKU") return 12;
+    if(h==="ระดับ Nonmove") return 20;
+    if(h==="DOH") return 16;
+    return 18;
+  });
+  const sheetXml=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetViews><sheetView workbookViewId="0"><pane ySplit="${headerRowNo}" topLeftCell="A${headerRowNo+1}" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews><sheetFormatPr defaultRowHeight="15"/><cols>${widths.map((w,i)=>`<col min="${i+1}" max="${i+1}" width="${w}" customWidth="1"/>`).join("")}</cols><sheetData>${sheetRows}</sheetData><autoFilter ref="A${headerRowNo}:${colName(headers.length-1)}${rn}"/></worksheet>`;
+  const stylesXml=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><fonts count="4"><font><sz val="10"/><name val="Tahoma"/></font><font><b/><sz val="14"/><name val="Tahoma"/></font><font><b/><sz val="10"/><color rgb="FFFFFFFF"/><name val="Tahoma"/></font><font><sz val="10"/><name val="Tahoma"/></font></fonts><fills count="3"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF0B4F91"/><bgColor indexed="64"/></patternFill></fill></fills><borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="5"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0" applyAlignment="1"><alignment vertical="center"/></xf><xf numFmtId="0" fontId="1" fillId="0" borderId="0" xfId="0" applyFont="1"/><xf numFmtId="0" fontId="2" fillId="2" borderId="0" xfId="0" applyFont="1" applyFill="1" applyAlignment="1"><alignment horizontal="center" vertical="center" wrapText="1"/></xf><xf numFmtId="4" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/><xf numFmtId="4" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>`;
+  const enc=new TextEncoder();
+  const crcTable=(()=>{const t=new Uint32Array(256);for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0}return t})();
+  const crc32=u=>{let c=0xFFFFFFFF;for(let i=0;i<u.length;i++)c=crcTable[(c^u[i])&0xFF]^(c>>>8);return (c^0xFFFFFFFF)>>>0};
+  const zipFiles=list=>{
+    const parts=[],central=[];let off=0;
+    list.forEach(([name,text])=>{
+      const nm=enc.encode(name),data=enc.encode(text),crc=crc32(data);
+      const lh=new DataView(new ArrayBuffer(30));
+      lh.setUint32(0,0x04034b50,true);lh.setUint16(4,20,true);lh.setUint16(6,0x0800,true);lh.setUint16(8,0,true);
+      lh.setUint16(10,0,true);lh.setUint16(12,0x21,true);lh.setUint32(14,crc,true);lh.setUint32(18,data.length,true);
+      lh.setUint32(22,data.length,true);lh.setUint16(26,nm.length,true);lh.setUint16(28,0,true);
+      parts.push(new Uint8Array(lh.buffer),nm,data);
+      const ch=new DataView(new ArrayBuffer(46));
+      ch.setUint32(0,0x02014b50,true);ch.setUint16(4,20,true);ch.setUint16(6,20,true);ch.setUint16(8,0x0800,true);ch.setUint16(10,0,true);
+      ch.setUint16(12,0,true);ch.setUint16(14,0x21,true);ch.setUint32(16,crc,true);ch.setUint32(20,data.length,true);
+      ch.setUint32(24,data.length,true);ch.setUint16(28,nm.length,true);ch.setUint32(42,off,true);
+      central.push(new Uint8Array(ch.buffer),nm);
+      off+=30+nm.length+data.length;
+    });
+    const cdSize=central.reduce((s,u)=>s+u.length,0);
+    const end=new DataView(new ArrayBuffer(22));
+    end.setUint32(0,0x06054b50,true);end.setUint16(8,list.length,true);end.setUint16(10,list.length,true);
+    end.setUint32(12,cdSize,true);end.setUint32(16,off,true);
+    return new Blob([...parts,...central,new Uint8Array(end.buffer)],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
+  };
+  const blob=zipFiles([
+    ["[Content_Types].xml",`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/></Types>`],
+    ["_rels/.rels",`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>`],
+    ["xl/workbook.xml",`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets><sheet name="Nonmove" sheetId="1" r:id="rId1"/></sheets></workbook>`],
+    ["xl/_rels/workbook.xml.rels",`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>`],
+    ["xl/styles.xml",stylesXml],
+    ["xl/worksheets/sheet1.xml",sheetXml]
+  ]);
   const url=URL.createObjectURL(blob);
   const a=document.createElement("a");
   const safeBranch=(isAll?"All_Branches":currentBranch).replace(/[\\/:*?"<>|]/g,"_");
@@ -479,7 +708,7 @@ function exportExcel(){
   const d=new Date();
   const ymd=`${d.getFullYear()}${String(d.getMonth()+1).padStart(2,"0")}${String(d.getDate()).padStart(2,"0")}`;
   a.href=url;
-  a.download=`Beger_Nonmove_${safeBranch}_${safeFilter}_${ymd}.xls`;
+  a.download=`Beger_Nonmove_${safeBranch}_${safeFilter}_${ymd}.xlsx`;
   document.body.appendChild(a);
   a.click();
   a.remove();
@@ -526,20 +755,58 @@ function saveAction(type){
 function closeDetail(){document.getElementById("detailModal").classList.remove("show")}
 function scrollToId(id){document.getElementById(id)?.scrollIntoView({behavior:"smooth",block:"start"})}
 function toast(t){const e=document.getElementById("toast");e.textContent=t;e.classList.add("show");setTimeout(()=>e.classList.remove("show"),1800)}
+function homeItems(){
+  const all=!currentBranch||currentBranch===ALL_BRANCHES;
+  return DB.items.filter(x=>x.branch&&x.sku&&!x.inactive&&(all||x.branch===currentBranch));
+}
+function renderHome(){
+  const all=!currentBranch||currentBranch===ALL_BRANCHES;
+  const arr=homeItems();
+  document.getElementById("homeScope").textContent = all ? `ภาพรวมทุกสาขา (${DB.branches.length} สาขา)` : `DoHome ${currentBranch}`;
+  document.getElementById("homeHint").textContent = all ? "น้อง PC กด \"เปลี่ยนสาขา\" เพื่อดูเป้าหมายของสาขาตัวเอง" : "";
+  const old=arr.filter(x=>x.age>=365);
+  const oldVal=old.reduce((t,x)=>t+plusGP(x.value),0);
+  document.getElementById("g1Count").textContent=money(old.length);
+  document.getElementById("g1Unit").textContent=all?"รายการ":"SKU";
+  document.getElementById("g1Value").textContent="฿"+money(oldVal);
+  document.getElementById("g1Msg").innerHTML = old.length
+    ? `<div class="need" style="background:var(--redBg);color:#b82925">ต้องขายให้หมด ${money(old.length)} ${all?"รายการ":"SKU"} (฿${money(oldVal)}) ภายใน 60 วัน</div>`
+    : `<div class="goal-ok">🎉 ไม่มี Nonmove เกิน 1 ปีแล้ว รักษาให้เป็น 0 ต่อไป</div>`;
+  const total=arr.reduce((t,x)=>t+plusGP(x.value),0);
+  const cut=Math.ceil(total*0.2), target=total-cut;
+  document.getElementById("g2Now").textContent="฿"+money(total);
+  document.getElementById("g2Target").textContent="฿"+money(target);
+  document.getElementById("g2Need").textContent=`ต้องขายออกอย่างน้อย ฿${money(cut)} ภายใน 60 วัน`;
+}
+function showView(v){
+  const home=v!=="list";
+  document.getElementById("homeView").style.display=home?"":"none";
+  document.getElementById("listView").style.display=home?"none":"";
+  document.body.classList.toggle("on-home",home);
+  ["tabHome","navHome"].forEach(id=>document.getElementById(id)?.classList.toggle("active",home));
+  ["tabList","navList"].forEach(id=>document.getElementById(id)?.classList.toggle("active",!home));
+  try{history.replaceState(null,"",home?location.pathname+location.search:"#list")}catch(e){}
+  window.scrollTo(0,0);
+  if(!home&&!currentBranch)openBranchChooser();
+}
+function startUsing(){showView("list")}
 function renderAll(){
   document.getElementById("branchName").textContent=
     currentBranch===ALL_BRANCHES ? "ทุกสาขา" :
     currentBranch ? `DoHome ${currentBranch}` : "ยังไม่ได้เลือกสาขา";
-  if(!currentBranch)return;
+  renderHome();
+  if(!currentBranch){
+    document.getElementById("tableBody").innerHTML=`<tr><td colspan="9" class="empty">กด "เปลี่ยนสาขา" เพื่อเลือกสาขาก่อน</td></tr>`;
+    return;
+  }
   renderBranchOptions();
   renderKpis();renderTable();
 }
 renderBranchOptions();
-if(!currentBranch || (currentBranch!==ALL_BRANCHES && !DB.branches.includes(currentBranch))){
-  currentBranch="";
-  openBranchChooser();
-} else renderAll();
-document.getElementById("branchModal").addEventListener("click",e=>{if(e.target.id==="branchModal"&&currentBranch)e.currentTarget.classList.remove("show")});
+if(currentBranch!==ALL_BRANCHES && !DB.branches.includes(currentBranch)) currentBranch=ALL_BRANCHES;
+renderAll();
+showView(location.hash==="#list"?"list":"home");
+document.getElementById("branchModal").addEventListener("click",e=>{if(e.target.id==="branchModal")e.currentTarget.classList.remove("show")});
 document.getElementById("detailModal").addEventListener("click",e=>{if(e.target.id==="detailModal")closeDetail()});
 </script>
 </body>

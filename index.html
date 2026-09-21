@@ -232,6 +232,25 @@ body.on-home .export-btn{display:none}
 @media(max-width:340px){.brand-title{display:none}}
 .goal-big{font-size:34px;margin:0 0 12px}.goal-what{font-size:18px}
 @media(max-width:620px){.goal-big{font-size:27px}.goal-what{font-size:16px}}
+@media(max-width:620px){.hm{display:none}table{min-width:0}th,td{padding:10px 8px}td.name{max-width:170px;white-space:normal}}
+tr.tap{cursor:pointer}
+@media(max-width:620px){
+  th,td{padding:9px 4px;font-size:10.5px}th{font-size:9.5px}
+  th:first-child,td:first-child{padding-left:8px}
+  td.name{max-width:none;min-width:0;white-space:normal;line-height:1.35}
+  td .badge{white-space:nowrap;padding:3px 5px;font-size:9.5px}
+  td.right{white-space:normal;line-height:1.3}
+  .table-card .section-head{padding:12px 12px 0!important}
+}
+
+.hero-hi{font-size:15px;color:var(--muted);font-weight:700;margin-bottom:2px}
+.hero h1.hero-branch{display:inline-block;margin:2px 0 6px;font-size:34px;line-height:1.25;color:#073b78}
+.hero h1.hero-branch small{font-size:16px;color:var(--muted);font-weight:700;margin-left:8px}
+@media(max-width:620px){.hero h1.hero-branch{font-size:26px}.hero h1.hero-branch small{display:block;margin:0;font-size:13px}}
+.st{margin-top:3px;font-size:11px;font-weight:800;color:#0e7a44}
+.more-box{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;padding:14px;font-size:13px;color:var(--muted);border-top:1px solid var(--line)}
+.more-box button{border:0;background:var(--navy);color:#fff;font-weight:800;border-radius:10px;padding:9px 16px}
+.mut-s{font-size:12px}
 </style>
 </head>
 <body>
@@ -272,7 +291,7 @@ body.on-home .export-btn{display:none}
         <div class="goal-body">
           <div class="goal-what">มูลค่า Nonmove ทั้งหมด</div>
           <div class="goal-big">ลดลง 20% ขึ้นไป</div>
-          <div class="bar-row"><div class="bar-label"><span>มูลค่า Nonmove ตอนนี้</span><b id="g2Now">-</b></div><div class="bar now"><i></i></div></div>
+          <div class="bar-row"><div class="bar-label"><span>มูลค่า Nonmove ตอนนี้ (ราคาขาย)</span><b id="g2Now">-</b></div><div class="bar now"><i></i></div></div>
           <div class="bar-row"><div class="bar-label"><span>ต้องเหลือไม่เกิน (ภายใน 60 วัน)</span><b id="g2Target">-</b></div><div class="bar tgt"><i></i><div class="cut">−20%</div></div></div>
           <div class="need" id="g2Need"></div>
           <div class="example"><b>ตัวอย่าง:</b> ถ้ามี Nonmove รวม <b>1,000,000 บาท</b> ภายใน 60 วันต้องเหลือไม่เกิน <b>800,000 บาท</b></div>
@@ -283,7 +302,7 @@ body.on-home .export-btn{display:none}
 
   <main id="listView" style="display:none">
     <div class="hero">
-      <div><h1>สวัสดีครับ น้อง PC 👋</h1><p>เลือกดูรายการ Nonmove ของสาขาคุณ ค้นหาและกรองตามอายุสินค้าได้ทันที</p></div>
+      <div><div class="hero-hi">สวัสดีครับ น้อง PC 👋</div><h1 class="hero-branch" id="heroBranch"></h1><p>รายการ Nonmove ของสาขานี้ ค้นหาและกรองตามอายุสินค้าได้ทันที</p></div>
       <div class="updated">ข้อมูลจากไฟล์ Nonmove ที่แนบ</div>
     </div>
 
@@ -309,6 +328,7 @@ body.on-home .export-btn{display:none}
           <tbody id="tableBody"></tbody>
         </table>
       </div>
+      <div id="moreWrap"></div>
     </section>
   </main>
 
@@ -339,13 +359,22 @@ const DB = {"branches":["กาญจนบุรี","ขอนแก่น","�
 const ALL_BRANCHES = "__ALL__";
 const LS_BRANCH = "beger_nonmove_branch_v1";
 const LS_ACTIONS = "beger_nonmove_actions_v1";
-let currentBranch = localStorage.getItem(LS_BRANCH) || ALL_BRANCHES;
+// localStorage อาจถูกบล็อก (เช่นบางแอปในมือถือ/โหมดส่วนตัว) จึงห่อด้วย try/catch ไม่ให้เว็บล่ม
+const store = {
+  get(k){ try{ return localStorage.getItem(k) }catch(e){ return null } },
+  set(k,v){ try{ localStorage.setItem(k,v) }catch(e){} }
+};
+let _memActions = {};
+let currentBranch = store.get(LS_BRANCH) || ALL_BRANCHES;
 let currentFilter = "all";
 let currentItem = null;
+let rowLimit = 500, lastSig = "";
 
 const money = n => new Intl.NumberFormat('th-TH',{maximumFractionDigits:0}).format(Number(n||0));
-const GP_RATE = 0.18;
-const plusGP = n => Number(n||0) * (1 + GP_RATE);
+const GP_RATE = 0.18;   // ราคาทุน +18%
+const VAT_RATE = 0.07;  // + ภาษีมูลค่าเพิ่ม 7%
+// ราคาขาย = ราคาทุน x 1.18 x 1.07 (รวม VAT)
+const plusGP = n => Number(n||0) * (1 + GP_RATE) * (1 + VAT_RATE);
 const unitPlusGP = i => i.stock > 0 ? plusGP(i.value / i.stock) : 0;
 const qty = n => new Intl.NumberFormat('th-TH',{maximumFractionDigits:1}).format(Number(n||0));
 const fmtDate = s => {
@@ -369,8 +398,12 @@ function branchItems(includeInactive=false){
     return branchOk && (includeInactive || !x.inactive);
   });
 }
-function actions(){try{return JSON.parse(localStorage.getItem(LS_ACTIONS)||"{}")}catch(e){return {}}}
-function saveActions(a){localStorage.setItem(LS_ACTIONS,JSON.stringify(a))}
+function actions(){
+  const raw=store.get(LS_ACTIONS);
+  if(raw){ try{ return JSON.parse(raw) }catch(e){} }
+  return _memActions;
+}
+function saveActions(a){ _memActions=a; store.set(LS_ACTIONS,JSON.stringify(a)) }
 function actionKey(i){return `${i.branch}|${i.sku}`}
 function getAction(i){return actions()[actionKey(i)]||null}
 
@@ -378,7 +411,10 @@ function openBranchChooser(){
   document.getElementById("branchModal").classList.add("show");
 }
 function chooseBranch(b){
-  currentBranch=b; localStorage.setItem(LS_BRANCH,b);
+  currentBranch=b; store.set(LS_BRANCH,b);
+  // เปลี่ยนสาขาแล้วล้างคำค้นหา/ตัวกรองเก่า กันเห็นรายการว่างโดยไม่รู้สาเหตุ
+  document.getElementById("searchInput").value=""; currentFilter="all";
+  document.querySelectorAll(".filter").forEach(x=>x.classList.toggle("active",x.dataset.age==="all"));
   document.getElementById("branchModal").classList.remove("show");
   renderAll();
   showView("list");
@@ -411,7 +447,7 @@ function renderKpis(){
     ["Nonmove 270 วัน",cnt(270),itemUnit,"orange",ageValue(270)],
     ["Nonmove 180 วัน",cnt(180),itemUnit,"yellow",ageValue(180)],
     ["Stock Nonmove",qty(totalStock),"ชิ้น/หน่วย","blue",null],
-    ["มูลค่า Stock +18%","฿"+money(totalValue),"บาท","green",null],
+    ["มูลค่าสต็อก","฿"+money(totalValue),"บาท (รวม VAT 7%)","green",null],
   ];
   document.getElementById("kpis").innerHTML=kpis.map(k=>`<div class="card kpi ${k[3]}">
     <div class="label">${k[0]}</div>
@@ -474,6 +510,8 @@ function getFilteredItems(){
 
 function renderTable(){
   let arr=getFilteredItems();
+  const sig=currentBranch+"|"+currentFilter+"|"+(document.getElementById("searchInput").value||"").trim();
+  if(sig!==lastSig){ rowLimit=500; lastSig=sig; }
 
   const isAll=currentBranch===ALL_BRANCHES;
   document.getElementById("tableTitle").textContent=isAll?"รายการ Nonmove ทุกสาขา":"รายการ Nonmove ในสาขา";
@@ -483,30 +521,36 @@ function renderTable(){
 
   document.getElementById("tableHead").innerHTML=`<tr>
     <th>SKU</th><th>สินค้า</th>${isAll?"<th>สาขา</th>":""}<th>ระดับ</th>
-    <th class="right">Stock</th><th class="right">ราคาทุน/หน่วย +18%</th>
-    <th class="right">มูลค่า Stock +18%</th><th>ขายล่าสุด</th><th class="right">DOH</th><th></th>
+    <th class="right">Stock</th><th class="right">ราคาขาย/หน่วย</th>
+    <th class="right vh">มูลค่าสต็อก</th><th class="hm">ขายล่าสุด</th><th class="right hm">DOH</th><th class="hm"></th>
   </tr>`;
 
   const body=document.getElementById("tableBody");
   const colCount=isAll?10:9;
   if(!arr.length){
     body.innerHTML=`<tr><td colspan="${colCount}" class="empty">ไม่พบรายการที่ค้นหา</td></tr>`;
+    document.getElementById("moreWrap").innerHTML="";
     return;
   }
-  body.innerHTML=arr.slice(0,1000).map(i=>`<tr>
+  const A=actions();
+  const STL={sold:"✅ ขายแล้ว",interest:"💙 ลูกค้าสนใจ",missing:"🔎 หาไม่เจอ",support:"🆘 ขอ Support"};
+  body.innerHTML=arr.slice(0,rowLimit).map(i=>`<tr class="tap" onclick='openDetailBySku(${JSON.stringify(i.sku)},${JSON.stringify(i.branch)})'>
     <td>${escapeHtml(i.sku)}</td>
-    <td class="name">${escapeHtml(i.name)}</td>
+    <td class="name">${escapeHtml(i.name)}${A[actionKey(i)]?`<div class="st">${STL[A[actionKey(i)].type]||""}</div>`:""}</td>
     ${isAll?`<td><span class="badge blue">${escapeHtml(i.branch)}</span></td>`:""}
     <td><span class="badge ${badgeClass(i.age)}">${ageText(i)}</span></td>
     <td class="right">${qty(i.stock)} ${escapeHtml(i.unit)}</td>
     <td class="right">฿${money(unitPlusGP(i))}</td>
     <td class="right">฿${money(plusGP(i.value))}</td>
-    <td>${fmtDate(i.lastSale)}</td>
-    <td class="right">${i.doh>=999?"ไม่มีขาย 56 วัน":money(i.doh)}</td>
-    <td><button class="open-btn" onclick='openDetailBySku(${JSON.stringify(i.sku)},${JSON.stringify(i.branch)})'>ดู</button></td>
+    <td class="hm">${fmtDate(i.lastSale)}</td>
+    <td class="right hm">${i.doh>=999?"ไม่มีขาย 56 วัน":money(i.doh)}</td>
+    <td class="hm"><button class="open-btn" onclick='openDetailBySku(${JSON.stringify(i.sku)},${JSON.stringify(i.branch)})'>ดู</button></td>
   </tr>`).join("");
+  document.getElementById("moreWrap").innerHTML = arr.length>rowLimit
+    ? `<div class="more-box">แสดง ${money(rowLimit)} จาก ${money(arr.length)} รายการ <button onclick="showMoreRows()">แสดงเพิ่ม</button><span class="mut-s">หรือใช้ช่องค้นหา/ตัวกรองอายุเพื่อหาสินค้า</span></div>` : "";
 }
 
+function showMoreRows(){ rowLimit+=500; renderTable(); }
 function csvSafe(v){
   const s=String(v??"");
   return `"${s.replace(/"/g,'""')}"`;
@@ -532,7 +576,7 @@ function exportExcel(){
   const headers=[
     ...(isAll?["สาขา"]:[]),
     "SKU","สินค้า","ระดับ Nonmove","Stock","หน่วย",
-    "ราคาทุน/หน่วย +18% (บาท)","มูลค่า Stock +18% (บาท)",
+    "ราคาขาย/หน่วย รวม VAT 7% (บาท)","มูลค่าสต็อก รวม VAT 7% (บาท)",
     "ขายล่าสุด","ยอดขาย 56 วัน","DOH"
   ];
 
@@ -552,7 +596,7 @@ function exportExcel(){
     ["ขอบเขต", isAll ? "ทุกสาขา" : `DoHome ${currentBranch}`],
     ["ตัวกรองอายุ", filterLabel],
     ["จำนวนรายการ", arr.length],
-    ["มูลค่า Stock +18% รวม (บาท)", Math.round(arr.reduce((s,i)=>s+plusGP(i.value),0)*100)/100],
+    ["มูลค่าสต็อกรวม รวม VAT 7% (บาท)", Math.round(arr.reduce((s,i)=>s+plusGP(i.value),0)*100)/100],
     [""]
   ];
   // Build a real .xlsx (zip of OOXML parts) with no external library, so Excel opens it without the format/extension warning.
@@ -650,8 +694,8 @@ function openDetailBySku(sku,branch){
     <span class="badge ${badgeClass(i.age)}">Nonmove ${ageText(i)}</span>
     <div class="detail-grid">
       <div class="detail-cell"><span>Stock คงเหลือ</span><strong>${qty(i.stock)} ${escapeHtml(i.unit)}</strong></div>
-      <div class="detail-cell"><span>ราคาทุน/หน่วย +18%</span><strong>฿${money(unitPlusGP(i))}</strong></div>
-      <div class="detail-cell"><span>มูลค่า Stock +18%</span><strong>฿${money(plusGP(i.value))}</strong></div>
+      <div class="detail-cell"><span>ราคาขาย/หน่วย (รวม VAT 7%)</span><strong>฿${money(unitPlusGP(i))}</strong></div>
+      <div class="detail-cell"><span>มูลค่าสต็อก (รวม VAT 7%)</span><strong>฿${money(plusGP(i.value))}</strong></div>
       <div class="detail-cell"><span>ขายล่าสุด</span><strong>${fmtDate(i.lastSale)}</strong></div>
       <div class="detail-cell"><span>ยอดขาย 56 วัน</span><strong>${qty(i.sales56)} ${escapeHtml(i.unit)}</strong></div>
     </div>
@@ -669,7 +713,12 @@ function openDetailBySku(sku,branch){
 }
 function saveAction(type){
   if(!currentItem)return;
-  const a=actions(), q=Math.max(1,Number(document.getElementById("soldQty")?.value||1));
+  const a=actions();
+  let q=Math.floor(Number(document.getElementById("soldQty")?.value));
+  if(type==="sold"){
+    if(!(q>=1)){ toast("กรุณาใส่จำนวนที่ขายได้ (ตั้งแต่ 1 ขึ้นไป)"); return; }
+    if(q>currentItem.stock){ toast(`จำนวนที่ขายเกินสต็อก (สต็อกมี ${qty(currentItem.stock)} ${currentItem.unit||""})`); return; }
+  } else if(!(q>=1)) q=1;
   a[actionKey(currentItem)]={type,qty:q,ts:new Date().toISOString()};
   saveActions(a); closeDetail(); renderAll();
   const labels={sold:"บันทึกขายแล้ว",interest:"บันทึกลูกค้าสนใจ",missing:"บันทึกหาสินค้าไม่เจอ",support:"บันทึกขอ Support"};
@@ -715,6 +764,7 @@ function renderAll(){
     currentBranch===ALL_BRANCHES ? "ทุกสาขา" :
     currentBranch ? `DoHome ${currentBranch}` : "ยังไม่ได้เลือกสาขา";
   renderHome();
+  document.getElementById("heroBranch").innerHTML = currentBranch===ALL_BRANCHES ? `📍 ทุกสาขา <small>${DB.branches.length} สาขา</small>` : currentBranch ? `📍 DoHome ${escapeHtml(currentBranch)}` : "";
   if(!currentBranch){
     document.getElementById("tableBody").innerHTML=`<tr><td colspan="9" class="empty">กด "เปลี่ยนสาขา" เพื่อเลือกสาขาก่อน</td></tr>`;
     return;

@@ -239,7 +239,7 @@ body.on-home .export-btn{display:none}
   <header class="topbar">
     <div class="top-inner">
       <div class="brand"><span class="brand-b">Beger</span><span class="brand-title">Nonmove <span>Focus</span></span><span class="brand-store">DoHome</span></div>
-      <nav class="top-tabs"><button id="tabHome" onclick="showView('home')">🏠 หน้าแรก</button><button id="tabList" onclick="showView('list')">📋 รายการสินค้า</button></nav>
+      <nav class="top-tabs"><button id="tabHome" onclick="showView('home')">🏠 หน้าแรก</button></nav>
       <div style="display:flex;align-items:center;gap:8px">
         <button class="export-btn" onclick="exportExcel()">⬇ Export Excel</button>
         <div class="branch-pill"><span>📍 <b id="branchName">ยังไม่ได้เลือกสาขา</b></span><button onclick="openBranchChooser()">เปลี่ยนสาขา</button></div>
@@ -248,26 +248,8 @@ body.on-home .export-btn{display:none}
   </header>
 
   <main class="home" id="homeView">
-    <section class="h-hero">
-      <div>
-        <div class="h-kicker">DoHome · ภารกิจ Nonmove Focus</div>
-        <h1>ช่วยกันเคลียร์สินค้า Nonmove<br>ภายใน <span>60 วัน</span></h1>
-        <p>Nonmove คือสินค้าที่ค้างอยู่ในสต็อกโดยไม่มียอดขายมานาน ยิ่งค้างนานยิ่งจมเงิน ทุกคนช่วยกันขายให้ได้ตามเป้าหมาย 2 ข้อนี้</p>
-        <div class="h-pills"><span>🎯 เกิน 1 ปี → <b>เหลือ 0</b></span><span>🎯 มูลค่า Nonmove <b>ลด 20%</b></span></div>
-        <div class="h-hero-actions">
-          <button class="h-cta" onclick="startUsing()">ดูรายการสินค้า →</button>
-          <button class="h-ghost" onclick="scrollToId('guide')">อ่านคู่มือใช้งาน</button>
-        </div>
-      </div>
-      <div class="h-hero-badge" aria-hidden="true"><div><b>60</b><span>วัน</span></div></div>
-    </section>
-
-    <h2 class="h-title big">🎯 เป้าหมายของเรา</h2>
-    <p class="h-sub">มี 2 เป้าหมาย ต้องทำให้สำเร็จภายใน 60 วัน</p>
-    <div class="scope">
-      <div class="sc-l">ตัวเลขด้านล่างเป็นของ <b id="homeScope"></b><div id="homeHint" class="sc-hint"></div></div>
-      <button onclick="openBranchChooser()">เปลี่ยนสาขา</button>
-    </div>
+    <h2 class="h-title big" style="margin-top:6px">🎯 เป้าหมาย 60 วัน</h2>
+    <p class="h-sub" id="homeScope"></p>
 
     <div class="goals">
       <article class="goal g1">
@@ -281,7 +263,7 @@ body.on-home .export-btn{display:none}
             <div class="g1-box g1-goal"><div class="t">เป้าหมาย</div><div class="n">0</div><div class="l" style="font-size:12px;color:#667085">ไม่เหลือเลย</div><div class="v">฿0</div></div>
           </div>
           <div id="g1Msg"></div>
-          <p style="margin:10px 0 0;font-size:12.5px;color:var(--muted);line-height:1.6">นับรวมสินค้าที่ไม่มียอดขาย 1 ปี และมากกว่า 2 ปี (ป้ายสีแดงในตาราง)</p>
+          <p style="margin:10px 0 0;font-size:12.5px;color:var(--muted);line-height:1.6">นับรวมสินค้าที่ไม่มียอดขาย 1 ปี และมากกว่า 2 ปี</p>
         </div>
       </article>
 
@@ -293,68 +275,9 @@ body.on-home .export-btn{display:none}
           <div class="bar-row"><div class="bar-label"><span>มูลค่า Nonmove ตอนนี้</span><b id="g2Now">-</b></div><div class="bar now"><i></i></div></div>
           <div class="bar-row"><div class="bar-label"><span>ต้องเหลือไม่เกิน (ภายใน 60 วัน)</span><b id="g2Target">-</b></div><div class="bar tgt"><i></i><div class="cut">−20%</div></div></div>
           <div class="need" id="g2Need"></div>
-          <div class="example"><b>ตัวอย่าง:</b> ถ้ามี Nonmove รวม <b>1,000,000 บาท</b> ภายใน 60 วันต้องเหลือไม่เกิน <b>800,000 บาท</b> (ขายออกอย่างน้อย 200,000 บาท)</div>
+          <div class="example"><b>ตัวอย่าง:</b> ถ้ามี Nonmove รวม <b>1,000,000 บาท</b> ภายใน 60 วันต้องเหลือไม่เกิน <b>800,000 บาท</b></div>
         </div>
       </article>
-    </div>
-    <p class="h-sub" style="margin-top:10px">มูลค่าในระบบคิดจากราคาทุน +18% เหมือนกับตัวเลขในตารางรายการสินค้า</p>
-
-    <h2 class="h-title">🏷️ อ่านสีป้ายอายุสินค้า</h2>
-    <p class="h-sub">ตัวเลขคือจำนวนวันที่สินค้านั้นไม่มียอดขาย เริ่มจากสีแดงก่อนเสมอ</p>
-    <div class="legend">
-      <div class="lg"><span class="badge red">&gt; 2 ปี</span><br><b>ค้างนานที่สุด</b><br>ไม่มียอดขายเกิน 2 ปี</div>
-      <div class="lg"><span class="badge red">1 ปี</span><br><b>ค้างนานมาก</b><br>ไม่มียอดขายเกิน 1 ปี</div>
-      <div class="lg"><span class="badge orange">270 วัน</span><br><b>เริ่มน่ากังวล</b><br>ไม่มียอดขายเกิน 270 วัน</div>
-      <div class="lg"><span class="badge yellow">180 วัน</span><br><b>เฝ้าระวัง</b><br>ไม่มียอดขายเกิน 180 วัน</div>
-      <div class="lg"><span class="badge blue">90 วัน</span><br><b>เพิ่งเริ่มค้าง</b><br>ไม่มียอดขายเกิน 90 วัน</div>
-    </div>
-
-    <h2 class="h-title" id="guide">📖 คู่มือใช้งาน ทำตามได้ใน 5 ขั้นตอน</h2>
-    <p class="h-sub">ใช้บนมือถือหรือคอมพิวเตอร์ก็ได้ หน้าตาเหมือนกัน</p>
-    <div class="steps">
-      <div class="card step"><div class="step-no">1</div><div>
-        <h4>เลือกสาขาของคุณ</h4>
-        <p>กดปุ่ม <b>เปลี่ยนสาขา</b> ที่มุมขวาบน แล้วเลือก DoHome สาขาที่คุณดูแล ระบบเริ่มต้นที่ <b>ทุกสาขา</b> เลือกแล้วระบบจะจำไว้ ไม่ต้องเลือกซ้ำทุกครั้ง</p>
-        <div class="mock" aria-hidden="true"><div class="mock-pill"><span>📍 <b>DoHome ขอนแก่น</b></span><span class="fake-btn">เปลี่ยนสาขา</span></div></div>
-      </div></div>
-      <div class="card step"><div class="step-no">2</div><div>
-        <h4>ดูภาพรวมจากการ์ดด้านบน</h4>
-        <p>การ์ดแต่ละใบบอก <b>จำนวนสินค้า</b> และ <b>มูลค่า</b> ของสินค้าแต่ละช่วงอายุ การ์ดสีแดงคือกลุ่มที่ต้องเคลียร์ก่อน</p>
-        <div class="mock" aria-hidden="true"><div class="mini-kpis">
-          <div class="mini-kpi r"><b>&gt; 2 ปี</b>จำนวน + มูลค่า</div>
-          <div class="mini-kpi r"><b>1 ปี</b>จำนวน + มูลค่า</div>
-          <div class="mini-kpi o"><b>270 วัน</b>จำนวน + มูลค่า</div>
-        </div></div>
-      </div></div>
-      <div class="card step"><div class="step-no">3</div><div>
-        <h4>กรองตามอายุ หรือค้นหาสินค้า</h4>
-        <p>กดปุ่มอายุ เช่น <b>&gt; 2 ปี</b> หรือพิมพ์รหัส SKU / ชื่อสินค้าในช่องค้นหา รายการที่อยู่บนสุดคือสินค้าที่ค้างนานที่สุดและมูลค่าสูงสุด ให้ขายตัวบน ๆ ก่อน</p>
-        <div class="mock" aria-hidden="true"><div class="fake-search">⌕ ค้นหา SKU / ชื่อสินค้า...</div>
-          <div class="pills"><span class="on">ทั้งหมด</span><span>&gt; 2 ปี</span><span>1 ปี</span><span>270 วัน</span><span>180 วัน</span><span>90 วัน</span></div></div>
-      </div></div>
-      <div class="card step"><div class="step-no">4</div><div>
-        <h4>กด "ดู" แล้วบันทึกผล</h4>
-        <p>กดปุ่ม <b>ดู</b> ท้ายแถวสินค้า จะเห็นสต็อก วันที่ขายล่าสุด และยอดขาย 56 วัน จากนั้นกดบันทึกว่าเกิดอะไรขึ้น ถ้าขายได้ให้ใส่ <b>จำนวนที่ขายได้</b> ก่อนกด</p>
-        <div class="mock" aria-hidden="true"><div class="mock-actions"><span class="a1">✅ ขายแล้ว</span><span class="a2">💙 ลูกค้าสนใจ</span><span class="a3">🔎 หาสินค้าไม่เจอ</span><span class="a4">🆘 ขอ Support</span></div></div>
-      </div></div>
-      <div class="card step"><div class="step-no">5</div><div>
-        <h4>Export เป็น Excel เมื่อต้องการ</h4>
-        <p>กดปุ่มสีเขียว <b>Export Excel</b> ที่แถบด้านบน จะได้ไฟล์ .xlsx ของสาขาและตัวกรองอายุที่เลือกอยู่ ไว้เปิดดูหรือส่งต่อได้</p>
-        <div class="mock" aria-hidden="true"><span class="fake-export">⬇ Export Excel</span></div>
-      </div></div>
-      <div class="card step"><div class="step-no">💡</div><div>
-        <h4>ข้อควรรู้</h4>
-        <ul class="know">
-          <li><b>+18%</b> = มูลค่าคิดจากราคาทุนบวก 18%</li>
-          <li><b>DOH</b> = จำนวนวันที่สต็อกพอขาย ถ้าขึ้น "ไม่มีขาย 56 วัน" คือไม่มียอดขายเลยใน 56 วันล่าสุด</li>
-          <li><b>ที่บันทึกผลไว้จะเก็บในเครื่องนี้เท่านั้น</b> ยังไม่ถูกส่งเข้าระบบกลาง ถ้าเปลี่ยนเครื่องหรือล้างข้อมูลเบราว์เซอร์ บันทึกจะหายไป</li>
-        </ul>
-      </div></div>
-    </div>
-
-    <div class="h-bottom">
-      <p>พร้อมแล้ว เริ่มเคลียร์ Nonmove กันเลย</p>
-      <button class="h-cta" onclick="startUsing()">ดูรายการสินค้า →</button>
     </div>
   </main>
 
@@ -391,7 +314,6 @@ body.on-home .export-btn{display:none}
 
   <nav class="bottom-nav">
     <button id="navHome" class="active" onclick="showView('home')"><b>⌂</b>หน้าแรก</button>
-    <button id="navList" onclick="showView('list')"><b>▦</b>สินค้า</button>
     <button onclick="openBranchChooser()"><b>⌖</b>สาขา</button>
   </nav>
 </div>
@@ -459,6 +381,7 @@ function chooseBranch(b){
   currentBranch=b; localStorage.setItem(LS_BRANCH,b);
   document.getElementById("branchModal").classList.remove("show");
   renderAll();
+  showView("list");
   toast(b===ALL_BRANCHES ? "เลือกดูข้อมูลทุกสาขาแล้ว" : `ตั้งสาขาเป็น DoHome ${b} แล้ว`);
 }
 function renderBranchOptions(){
@@ -763,15 +686,12 @@ function renderHome(){
   const all=!currentBranch||currentBranch===ALL_BRANCHES;
   const arr=homeItems();
   document.getElementById("homeScope").textContent = all ? `ภาพรวมทุกสาขา (${DB.branches.length} สาขา)` : `DoHome ${currentBranch}`;
-  document.getElementById("homeHint").textContent = all ? "น้อง PC กด \"เปลี่ยนสาขา\" เพื่อดูเป้าหมายของสาขาตัวเอง" : "";
   const old=arr.filter(x=>x.age>=365);
   const oldVal=old.reduce((t,x)=>t+plusGP(x.value),0);
   document.getElementById("g1Count").textContent=money(old.length);
   document.getElementById("g1Unit").textContent=all?"รายการ":"SKU";
   document.getElementById("g1Value").textContent="฿"+money(oldVal);
-  document.getElementById("g1Msg").innerHTML = old.length
-    ? `<div class="need" style="background:var(--redBg);color:#b82925">ต้องขายให้หมด ${money(old.length)} ${all?"รายการ":"SKU"} (฿${money(oldVal)}) ภายใน 60 วัน</div>`
-    : `<div class="goal-ok">🎉 ไม่มี Nonmove เกิน 1 ปีแล้ว รักษาให้เป็น 0 ต่อไป</div>`;
+  document.getElementById("g1Msg").innerHTML = old.length ? "" : `<div class="goal-ok">🎉 ไม่มี Nonmove เกิน 1 ปีแล้ว รักษาให้เป็น 0 ต่อไป</div>`;
   const total=arr.reduce((t,x)=>t+plusGP(x.value),0);
   const cut=Math.ceil(total*0.2), target=total-cut;
   document.getElementById("g2Now").textContent="฿"+money(total);
